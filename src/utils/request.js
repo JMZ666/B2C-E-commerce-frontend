@@ -45,7 +45,9 @@ service.interceptors.request.use(
   config => {
     const { authorization } = useApp()
     if (authorization) {
-      config.headers.Authorization = `Bearer ${authorization.token}`
+      // config.headers.Authorization = `Bearer ${authorization.token}`
+      //把token放到请求头里
+      config.headers.token=`${authorization.token}`
     }
     return config
   },
