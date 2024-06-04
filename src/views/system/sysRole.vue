@@ -19,8 +19,24 @@
 
         <!-- 添加按钮 -->
         <div class="tools-div">
-            <el-button type="success" size="small">添 加</el-button>
+            <el-button type="success" size="small" @click="addShow">添 加</el-button>
         </div>
+
+        <!-- 添加角色表单对话框（弹出框） -->
+        <el-dialog v-model="dialogVisible" title="添加或修改角色" width="30%">
+            <el-form label-width="120px">
+                <el-form-item label="角色名称">
+                    <el-input v-model="sysRole.roleName"/>
+                </el-form-item>
+                <el-form-item label="角色Code">
+                    <el-input  v-model="sysRole.roleCode"/>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="submit">提交</el-button>
+                    <el-button @click="dialogVisible = false">取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>   
         
         <!--- 角色表格数据 -->
         <el-table :data="list" style="width: 100%">
@@ -54,7 +70,8 @@
 <!-- script部分修改内容 -->
 <script setup>
 import { ref , onMounted } from 'vue';
-import { GetSysRoleListByPage } from '@/api/sysRole';
+import { GetSysRoleListByPage , SaveSysRole} from '@/api/sysRole';
+import { ElMessage } from 'element-plus'
 
 // 分页条总记录数
 let total = ref(0)
@@ -88,6 +105,31 @@ const fetchData = async () => {
     const {data , code , message } = await GetSysRoleListByPage(pageParams.value.page , pageParams.value.limit , queryDto.value) ;
     list.value = data.list ;
     total.value = data.total
+}
+
+// 控制对话是否展示的变量
+const dialogVisible = ref(false)
+
+//进入添加
+const addShow = () => {
+  	dialogVisible.value = true
+}
+//表单数据模型
+const defaultForm = {
+    id: "",
+    roleCode: "",
+    roleName: ""
+}
+const sysRole = ref(defaultForm)   // 使用ref包裹该对象，使用reactive不方便进行重置
+ 
+// 添加角色
+const submit = async () => {
+    const { code } = await SaveSysRole(sysRole.value) ;
+    if(code === 200) {
+        dialogVisible.value = false
+        ElMessage.success('操作成功')
+        fetchData()
+    }
 }
 </script>
 
