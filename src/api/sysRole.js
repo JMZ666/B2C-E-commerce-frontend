@@ -17,3 +17,12 @@ export const SaveSysRole = (data) => {
         data
     })
 }
+
+// 修改角色请求方法
+export const UpdateSysRole = (data) => {
+    return request({
+        url: '/admin/system/sysRole/updateSysRole',
+        method: 'put',
+        data
+    })
+}
