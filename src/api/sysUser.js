@@ -8,3 +8,12 @@ export const GetSysUserListByPage = (pageNum , pageSize , queryDto) => {
         params: queryDto
     })
 }
+
+// 新增用户的方法
+export const SaveSysUser = (data) => {
+    return request({
+        url: "/admin/system/sysUser/saveSysUser",
+        method: "post",
+        data
+    })
+}
