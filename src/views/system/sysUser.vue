@@ -85,8 +85,8 @@
             {{ scope.row.status == 1 ? '正常' : '停用' }}
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" />
-        <el-table-column label="操作" align="center" width="280" >
-            <el-button type="primary" size="small" @click="showEdit">
+        <el-table-column label="操作" align="center" width="280" #default="scope">
+            <el-button type="primary" size="small" @click="editSysUser(scope.row)">
                 修改
             </el-button>
             <el-button type="danger" size="small">
@@ -110,7 +110,7 @@
 
 <script setup>
 import { ref , onMounted } from 'vue'; 
-import { GetSysUserListByPage , SaveSysUser } from '@/api/sysUser';
+import { GetSysUserListByPage , SaveSysUser , UpdateSysUser } from '@/api/sysUser';
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 // 表格数据模型
@@ -186,14 +186,31 @@ const sysUser = ref(defaultForm)
 
 // 提交按钮事件处理函数
 const submit = async () => {
-    const {code , message , data} = await SaveSysUser(sysUser.value) 
-    if(code === 200) {
-        dialogVisible.value = false
-        ElMessage.success('操作成功')
-        fetchData()
+    if(!sysUser.value.id) {
+        const {code , message , data} = await SaveSysUser(sysUser.value) 
+        if(code === 200) {
+            dialogVisible.value = false
+            ElMessage.success('操作成功')
+            fetchData()
+        }else {
+            ElMessage.error(message)
+        }
     }else {
-        ElMessage.error(message)
-    }
+        const {code , message , data} = await UpdateSysUser(sysUser.value) 
+        if(code === 200) {
+            dialogVisible.value = false
+            ElMessage.success('操作成功')
+            fetchData()
+        }else {
+            ElMessage.error(message)
+        }   
+    }    
+}
+
+// 修改按钮点击事件处理函数
+const editSysUser = (row) => {
+    dialogVisible.value = true 
+    sysUser.value = {...row}
 }
 </script>
 

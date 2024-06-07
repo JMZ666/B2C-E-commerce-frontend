@@ -17,3 +17,12 @@ export const SaveSysUser = (data) => {
         data
     })
 }
+
+// 修改用户数据的方法
+export const UpdateSysUser = (sysUser) => {
+    return request({
+        url: "/admin/system/sysUser/updateSysUser",
+        method: "put",
+        data: sysUser
+    })
+}
