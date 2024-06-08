@@ -26,3 +26,11 @@ export const UpdateSysUser = (sysUser) => {
         data: sysUser
     })
 }
+
+// 根据id删除用户
+export const DeleteSysUserById = (userId) => {
+    return request({
+        url: "/admin/system/sysUser/deleteById/" + userId,
+        method: 'delete'
+    })
+}
