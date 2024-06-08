@@ -4,8 +4,10 @@ import request from '@/utils/request'
 export const GetSysRoleListByPage = (pageNum , pageSize , queryDto) => {
     return request({
         url: '/admin/system/sysRole/findByPage/' + pageNum + "/" + pageSize,
-        method: 'get',
-        params: queryDto
+        method: 'post',
+        //后端接口如果是@RequestBody，需要用data
+        //如果没有注解,前端是params：名称，参考api/sysUser.js，所以。。。为什么？？？
+        data: queryDto
     })
 }
 

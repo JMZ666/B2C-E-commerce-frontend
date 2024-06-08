@@ -114,10 +114,7 @@ import { GetSysUserListByPage , SaveSysUser , UpdateSysUser , DeleteSysUserById}
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 // 表格数据模型
-const list = ref([
-    {"id":1 , "username":"admin" , "name": "admin" , "phone":"13121034567" , "status":1 , "createTime": "2023-05-11"} ,
-    {"id":2 , "username":"admin" , "name": "admin" , "phone":"13121034567" , "status":1 , "createTime": "2023-05-11"} 
-]);
+const list = ref([]);
 
 // 分页条数据模型
 const total = ref(0)
