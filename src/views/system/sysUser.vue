@@ -260,19 +260,18 @@ const deleteById = (row) => {
 
 // 角色列表
 const userRoleIds = ref([])
-const allRoles = ref([
-    {"id":1 , "roleName":"管理员"},
-    {"id":2 , "roleName":"业务人员"},
-    {"id":3 , "roleName":"商品录入员"},
-])
+const allRoles = ref([])
 const dialogRoleVisible = ref(false)
 const showAssignRole = async row => {
   sysUser.value = row
   dialogRoleVisible.value = true
 
     // 查询所有的角色数据
-  const {code , message , data } = await GetAllRoleList() ;
+  const {code , message , data } = await GetAllRoleList(row.id) ;
   allRoles.value = data.allRolesList
+
+    // 获取当前登录用户的角色数据
+  userRoleIds.value = data.userRoleList
 
 }
 
