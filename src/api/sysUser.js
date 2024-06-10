@@ -34,3 +34,12 @@ export const DeleteSysUserById = (userId) => {
         method: 'delete'
     })
 }
+
+// 为用户分配角色请求
+export const DoAssignRoleToUser = (assignRoleVo) => {
+    return request({
+        url: "/admin/system/sysUser/doAssign",
+        method: 'post',
+        data: assignRoleVo
+    })
+}

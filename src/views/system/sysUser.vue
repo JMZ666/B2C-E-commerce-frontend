@@ -114,7 +114,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary">提交</el-button>
+                <el-button type="primary" @click="doAssign">提交</el-button>
                 <el-button @click="dialogRoleVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
@@ -132,7 +132,7 @@
 
 <script setup>
 import { ref , onMounted } from 'vue'; 
-import { GetSysUserListByPage , SaveSysUser , UpdateSysUser , DeleteSysUserById} from '@/api/sysUser';
+import { GetSysUserListByPage , SaveSysUser , UpdateSysUser , DeleteSysUserById , DoAssignRoleToUser} from '@/api/sysUser';
 import { GetAllRoleList } from '@/api/sysRole'; 
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useApp } from '@/pinia/modules/app'
@@ -274,6 +274,20 @@ const showAssignRole = async row => {
   const {code , message , data } = await GetAllRoleList() ;
   allRoles.value = data.allRolesList
 
+}
+
+// 角色分配按钮事件处理函数
+const doAssign = async () => {
+    let assignRoleVo = {
+        userId: sysUser.value.id ,
+        roleIdList: userRoleIds.value
+    }
+    const { code , message , data} = await DoAssignRoleToUser(assignRoleVo) ;
+    if(code === 200) {
+        ElMessage.success('操作成功')
+        dialogRoleVisible.value = false 
+        fetchData()
+    }
 }
 </script>
 
