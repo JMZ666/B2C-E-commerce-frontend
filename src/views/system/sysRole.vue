@@ -110,6 +110,11 @@ const fetchData = async () => {
 // 控制对话是否展示的变量
 const dialogVisible = ref(false)
 
+// 重置按钮点击事件处理函数
+const resetData = () => {
+  queryDto.value = {}
+}
+
 //进入添加
 const addShow = () => {
   	dialogVisible.value = true
