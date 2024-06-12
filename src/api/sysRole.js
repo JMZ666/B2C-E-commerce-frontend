@@ -52,3 +52,12 @@ export const GetSysRoleMenuIds = (roleId) => {
         method: 'get'
     })
 }
+
+// 保存角色分配菜单请求方法
+export const DoAssignMenuIdToSysRole = (assignMenuDto) => {
+    return request({
+        url: "/admin/system/sysRoleMenu/doAssign",
+        method: 'post',
+        data: assignMenuDto
+    })
+}

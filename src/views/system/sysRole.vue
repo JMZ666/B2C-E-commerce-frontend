@@ -72,7 +72,7 @@
                         :props="defaultProps"
                 />
                 <el-form-item>
-                    <el-button type="primary">提交</el-button>
+                    <el-button type="primary" @click="doAssign">提交</el-button>
                     <el-button @click="dialogMenuVisible = false">取消</el-button>
                 </el-form-item>
             </el-form>
@@ -95,7 +95,7 @@
 <!-- script部分修改内容 -->
 <script setup>
 import { ref , onMounted } from 'vue';
-import { GetSysRoleListByPage , SaveSysRole , UpdateSysRole , DeleteSysRoleById , GetSysRoleMenuIds} from '@/api/sysRole';
+import { GetSysRoleListByPage , SaveSysRole , UpdateSysRole , DeleteSysRoleById , GetSysRoleMenuIds , DoAssignMenuIdToSysRole} from '@/api/sysRole';
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 // 分页条总记录数
@@ -213,6 +213,41 @@ const showAssignMenu = async row => {
   sysMenuTreeList.value = data.sysMenuList
   tree.value.setCheckedKeys(data.roleMenuIds)   // 进行数据回显
 }
+
+const doAssign = async () => {
+    const checkedNodes = tree.value.getCheckedNodes() ; // 获取选中的节点
+    const checkedNodesIds = checkedNodes.map(node => {  // 获取选中的节点的id
+        return {
+            id: node.id,
+            isHalf: 0
+        }
+    })
+        
+    // 获取半选中的节点数据，当一个节点的子节点被部分选中时，该节点会呈现出半选中的状态
+    const halfCheckedNodes = tree.value.getHalfCheckedNodes() ; 
+    const halfCheckedNodesIds = halfCheckedNodes.map(node => {   // 获取半选中节点的id
+        return {
+            id: node.id,
+            isHalf: 1
+        }
+    })
+        
+    // 将选中的节点id和半选中的节点的id进行合并
+    const menuIds = [...checkedNodesIds , ...halfCheckedNodesIds]  
+    console.log(menuIds);
+
+    // 构建请求数据
+    const assignMenuDto = {
+        roleId: roleId,
+        menuIdList: menuIds
+    }
+ 
+    // 发送请求
+    await DoAssignMenuIdToSysRole(assignMenuDto) ;
+    ElMessage.success('操作成功')
+    dialogMenuVisible.value = false
+
+} 
 </script>
 
 <style scoped>
