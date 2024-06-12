@@ -50,8 +50,33 @@
                 <el-button type="danger" size="small" @click="deleteById(scope.row)">
                     删除
                 </el-button>
+                <el-button type="warning" size="small" @click="showAssignMenu(scope.row)">
+                    分配菜单
+                </el-button>
             </el-table-column>
         </el-table>
+
+
+        <!-- 分配菜单的对话框 
+        // tree组件添加ref属性，后期方便进行tree组件对象的获取
+        -->
+        <el-dialog v-model="dialogMenuVisible" title="分配菜单" width="40%">
+            <el-form label-width="80px">
+                <el-tree
+                        :data="sysMenuTreeList"
+                        ref="tree"   
+                        show-checkbox
+                        default-expand-all
+                        :check-on-click-node="true"
+                        node-key="id"
+                        :props="defaultProps"
+                />
+                <el-form-item>
+                    <el-button type="primary">提交</el-button>
+                    <el-button @click="dialogMenuVisible = false">取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
 
         <!--分页条-->
         <el-pagination
@@ -70,7 +95,7 @@
 <!-- script部分修改内容 -->
 <script setup>
 import { ref , onMounted } from 'vue';
-import { GetSysRoleListByPage , SaveSysRole , UpdateSysRole , DeleteSysRoleById } from '@/api/sysRole';
+import { GetSysRoleListByPage , SaveSysRole , UpdateSysRole , DeleteSysRoleById , GetSysRoleMenuIds} from '@/api/sysRole';
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 // 分页条总记录数
@@ -166,6 +191,27 @@ const deleteById = (row) => {
             fetchData()
        }
     })
+}
+
+//为角色分配菜单
+const defaultProps = {
+  children: 'children',
+  label: 'title',
+}
+const dialogMenuVisible = ref(false)
+const sysMenuTreeList = ref([])
+
+// 树对象变量
+const tree = ref() 
+
+// 默认选中的菜单数据集合
+let roleId = ref()
+const showAssignMenu = async row => { 
+  dialogMenuVisible.value = true
+  roleId = row.id
+  const { data } = await GetSysRoleMenuIds(row.id)   // 请求后端地址获取所有的菜单数据，以及当前角色所对应的菜单数据
+  sysMenuTreeList.value = data.sysMenuList
+  tree.value.setCheckedKeys(data.roleMenuIds)   // 进行数据回显
 }
 </script>
 
