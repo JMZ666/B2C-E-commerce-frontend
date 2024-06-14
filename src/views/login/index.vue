@@ -1,6 +1,12 @@
 <!--登录页面-->
 <template>
   <div class="login">
+    <div class="left-effect">
+      <div class="main">
+        <div class="box" id="box1">B2C-E-</div>
+        <div class="box" id="box2">commerce</div>
+      </div>
+    </div>
     <el-form class="form" :model="model" :rules="rules" ref="loginForm">
       <img class="logo" src="~@/assets/logo.svg" />
       <h2 class="heading">ADMIN PANEL</h2>
@@ -73,7 +79,7 @@ export default defineComponent({
   components: { ChangeLang },
   name: 'login',
   setup() {
-    const { proxy: ctx } = getCurrentInstance() // 可以把ctx当成vue2中的this
+    const { proxy: ctx } = getCurrentInstance()
     const router = useRouter()
     const route = useRoute()
     const { lang } = useLang()
@@ -110,7 +116,6 @@ export default defineComponent({
       ],
     })
 
-    // onMounted钩子函数
     onMounted(() => {
       state.refreshCaptcha()
     })
@@ -119,8 +124,8 @@ export default defineComponent({
       model: {
         userName: 'admin',
         password: '111111',
-        captcha: '',      // 用户输入的验证码
-        codeKey: ''       // 后端返回的验证码key
+        captcha: '',
+        codeKey: ''
       },
       rules: getRules(),
       loading: false,
@@ -150,13 +155,11 @@ export default defineComponent({
 
               const targetPath = decodeURIComponent(route.query.redirect)
               if (targetPath.startsWith('http')) {
-                // 如果是一个url地址
                 window.location.href = targetPath
               } else if (targetPath.startsWith('/')) {
-                // 如果是内部路由地址
                 router.push(targetPath)
               } else {
-                router.push('/')    // 请求成功以后，进入到首页
+                router.push('/')
               }
               useApp().initToken(data)
             } else {
@@ -177,12 +180,68 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .login {
-  // margin-left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  background: white;
+  padding-left: 2em; /* 左侧间距 */
+  padding-right: 2em; /* 右侧间距 */
+}
+
+.left-effect {
+  width: 60%; /* 调整宽度 */
+  height: 100%;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  animation: slideIn 2s ease-in-out;
+  padding-right: 2em; /* 表单和动效之间的间距 */
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background: white;
+}
+
+.main {
+  display: inline-flex;
+}
+
+.box {
+  margin-top: 50px;
+  font-size: 5em;
+  padding: 20px;
+  color: white;
+  font-weight: 800;
+  animation: aniload 3s;
+}
+
+#box1::after {
+  content: "B2C-E-";
+  display: flex;
+  transform: rotateX(180deg);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .0) 10%, rgba(255, 255, 255, .5));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+#box2 {
+  color: rgb(37, 116, 236);
+}
+
+#box2::after {
+  content: "commerce";
+  display: flex;
+  transform: rotateX(180deg);
+  background-image: linear-gradient(180deg, rgba(37, 116, 236, .0) 10%, rgba(37, 116, 236, .5));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@keyframes aniload {
+  from {
+    transform: translate(-1000px, 0px)
+  }
+  to {
+    transform: translate(0px, 0px)
+  }
 }
 
 .form {
@@ -203,7 +262,7 @@ export default defineComponent({
   }
 }
 
-.logo{
+.logo {
   place-self: center;
   max-width: 150px;
   max-height: 150px;
