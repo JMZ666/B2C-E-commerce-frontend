@@ -35,7 +35,7 @@
 <template>
   <div class="brand">
     <img class="logo" src="~@/assets/logo.svg" @click="goHome" />
-    <div class="title">Vue3 Element Admin</div>
+    <!-- <div class="title">B2C-E-commerce</div> -->
   </div>
 </template>
 <script>
@@ -54,22 +54,22 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .brand {
-  height: 48px;
+  height: 150px;
   padding: 0 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   .logo {
     cursor: pointer;
-    max-width: 32px;
-    max-height: 32px;
+    max-width: 250px;
+    max-height: 250px;
   }
   .title {
     color: #fff;
     font-size: 14px;
     font-weight: 700;
     white-space: nowrap;
-    margin-left: 8px;
+    margin-left: 0px;
     transition: all 0.5s;
   }
 }
