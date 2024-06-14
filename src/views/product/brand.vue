@@ -33,8 +33,8 @@
             <img :src="scope.row.logo" width="50" />
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" />
-        <el-table-column label="操作" align="center" width="200" >
-            <el-button type="primary" size="small">
+        <el-table-column label="操作" align="center" width="200" #default="scope">
+            <el-button type="primary" size="small" @click="editShow(scope.row)">
                 修改
             </el-button>
             <el-button type="danger" size="small">
@@ -57,7 +57,7 @@
 
 <script setup>
 import { ref , onMounted } from 'vue'
-import { GetBrandPageList , SaveBrand } from '@/api/brand.js'
+import { GetBrandPageList , SaveBrand , UpdateBrandById} from '@/api/brand.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useApp } from '@/pinia/modules/app'
 
@@ -124,7 +124,9 @@ const handleAvatarSuccess = (response) => {
 const saveOrUpdate = () => {
   if (!brand.value.id) {
     saveData()
-  } 
+  } else {
+    updateData() 
+  }
 }
 
 // 新增
@@ -133,6 +135,20 @@ const saveData = async () => {
   dialogVisible.value = false
   ElMessage.success('操作成功')
   fetchData()
+}
+
+//进入修改
+const editShow = row => {
+  brand.value = row
+  dialogVisible.value = true
+}
+
+// 修改
+const updateData = async () => {
+    await UpdateBrandById(brand.value)
+    dialogVisible.value = false
+    ElMessage.success('操作成功')
+    fetchData()
 }
 </script>
 
