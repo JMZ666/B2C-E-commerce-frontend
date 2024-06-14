@@ -2,10 +2,11 @@
 <template>
   <div class="login">
     <el-form class="form" :model="model" :rules="rules" ref="loginForm">
-      <h1 class="title">B2C-E-commerce后台管理系统</h1>
+      <img class="logo" src="~@/assets/logo.svg" />
+      <h2 class="heading">ADMIN PANEL</h2>
       <el-form-item prop="userName">
         <el-input
-          class="text"
+          class="input"
           v-model="model.userName"
           prefix-icon="User"
           clearable
@@ -14,7 +15,7 @@
       </el-form-item>
       <el-form-item prop="password">
         <el-input
-          class="text"
+          class="input"
           v-model="model.password"
           prefix-icon="Lock"
           show-password
@@ -22,11 +23,10 @@
           :placeholder="$t('login.password')"
         />
       </el-form-item>
-
       <el-form-item prop="captcha">
           <div class="captcha">
               <el-input
-                        class="text"
+                        class="input"
                         v-model="model.captcha"
                         prefix-icon="Picture"
                         placeholder="请输入验证码"
@@ -34,7 +34,6 @@
               <img :src="captchaSrc" @click="refreshCaptcha" />
           </div>
       </el-form-item>
-
       <el-form-item>
         <el-button
           :loading="loading"
@@ -109,7 +108,6 @@ export default defineComponent({
             trigger: 'blur',
         },
       ],
-
     })
 
     // onMounted钩子函数
@@ -179,52 +177,83 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .login {
-  transition: transform 1s;
-  transform: scale(1);
+  // margin-left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: white;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+  padding: 2.5em;
+  border-radius: 25px;
+  transition: .4s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.4) 1px 2px 2px;
+  max-width: 400px;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #2d3a4b;
-  .form {
-    width: 520px;
-    max-width: 100%;
-    padding: 0 24px;
-    box-sizing: border-box;
-    margin: 160px auto 0;
-    :deep {
-      .el-input__wrapper {
-        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-        background: rgba(0, 0, 0, 0.1);
-      }
-      .el-input-group--append > .el-input__wrapper {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-      .el-input-group--prepend > .el-input__wrapper {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-    }
-    .title {
-      color: #fff;
-      text-align: center;
-      font-size: 24px;
-      margin: 0 0 24px;
-    }
-    .text {
-      font-size: 16px;
-      :deep(.el-input__inner) {
-        color: #fff;
-        height: 48px;
-        line-height: 48px;
-        &::placeholder {
-          color: rgba(255, 255, 255, 0.2);
-        }
-      }
-    }
-    .btn {
-      width: 100%;
-    }
+  &:hover {
+    transform: translateX(-0.5em) translateY(-0.5em);
+    border: 1px solid #171717;
+    box-shadow: 10px 10px 0px #666666;
+  }
+}
+
+.logo{
+  place-self: center;
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.heading {
+  color: black;
+  padding-bottom: 2em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.input {
+  border-radius: 5px !important;
+  border: 1px solid whitesmoke;
+  background-color: whitesmoke;
+  outline: none;
+  padding: 0.7em;
+  transition: .4s ease-in-out;
+  &:hover {
+    box-shadow: 6px 6px 0px #969696,
+                -3px -3px 10px #ffffff;
+  }
+  &:focus {
+    background: #ffffff;
+    box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+  }
+}
+
+.btn {
+  background-color: whitesmoke;
+  margin-top: 2em;
+  align-self: center;
+  padding: 0.7em;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-radius: 10px;
+  border: none;
+  color: black;
+  transition: .4s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
+  &:hover {
+    box-shadow: 6px 6px 0px #969696,
+               -3px -3px 10px #ffffff;
+    transform: translateX(-0.5em) translateY(-0.5em);
+  }
+  &:active {
+    transition: .2s;
+    transform: translateX(0em) translateY(0em);
+    box-shadow: none;
   }
 }
 
