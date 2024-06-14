@@ -9,3 +9,12 @@ export const GetBrandPageList = (pageNum, pageSize) => {
     method: 'get'
   })
 }
+
+// 添加品牌
+export const SaveBrand = brand => {
+    return request({
+        url: `${api_name}/saveBrand`,
+        method: 'post',
+        data: brand,
+    })
+}
