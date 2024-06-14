@@ -27,3 +27,11 @@ export const UpdateBrandById = brand => {
       data: brand,
   })
 }
+
+// 根据id删除品牌
+export const DeleteBrandById = id => {
+  return request({
+    url: `${api_name}/deleteById/${id}`,
+    method: 'delete',
+  })
+}
