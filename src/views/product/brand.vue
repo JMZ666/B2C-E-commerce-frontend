@@ -20,25 +20,55 @@
     </el-table>
 
     <el-pagination
+        v-model:current-page="pageParams.page"
+        v-model:page-size="pageParams.limit"
         :page-sizes="[10, 20, 50, 100]"
         layout="total, sizes, prev, pager, next"
         :total="total"
-    />
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        />
 
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref , onMounted } from 'vue'
+import { GetBrandPageList } from '@/api/brand.js'
 
 // 定义表格数据模型
-const list = ref([
-    {"id":1 , "name":"华为" , "logo":"http://139.198.127.41:9000/sph/20230506/华为.png"} , 
-    {"id":2 , "name":"小米" , "logo":"http://139.198.127.41:9000/sph/20230506/小米.png"} , 
-])
+const list = ref([])
 
 // 分页条数据模型
 const total = ref(0)
 
+//分页条数据模型
+const pageParamsForm = {
+  page: 1, // 页码
+  limit: 10, // 每页记录数
+}
+const pageParams = ref(pageParamsForm)
+
+// 钩子函数
+onMounted(()=> {
+    fetchData()
+})
+
+//页面变化
+const handleSizeChange = size => {
+  pageParams.value.limit = size
+  fetchData()
+}
+const handleCurrentChange = number => {
+  pageParams.value.page = number
+  fetchData()
+}
+
+// 分页查询
+const fetchData = async () => {
+   const {code , message , data} = await GetBrandPageList(pageParams.value.page , pageParams.value.limit) 
+   list.value = data.list
+   total.value = data.total
+}
 </script>
 
 <style scoped>
