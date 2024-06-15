@@ -80,8 +80,8 @@
             <img :src="scope.row.logo" width="50" />
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" />
-        <el-table-column label="操作" align="center" width="200" >
-            <el-button type="primary" size="small" >
+        <el-table-column label="操作" align="center" width="200" #default="scope">
+            <el-button type="primary" size="small" @click="editShow(scope.row)">
                 修改
             </el-button>
             <el-button type="danger" size="small">
@@ -105,7 +105,7 @@
 import { ref , onMounted } from 'vue'
 import { FindAllBrand } from '@/api/brand.js'
 import { FindCategoryByParentId } from '@/api/category.js'
-import { GetCategoryBrandPageList,SaveCategoryBrand } from '@/api/categoryBrand.js'
+import { GetCategoryBrandPageList,SaveCategoryBrand ,UpdateCategoryBrandById } from '@/api/categoryBrand.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
     
 const props = {
@@ -211,7 +211,9 @@ const saveOrUpdate = () => {
   categoryBrand.value.categoryId = categoryBrand.value.categoryId[2]
   if (!categoryBrand.value.id) {
     saveData()
-  } 
+  } else {
+    updateData() 
+  }
 }
 
 // 新增
@@ -221,7 +223,21 @@ const saveData = async () => {
   ElMessage.success('操作成功')
   fetchData()
 }
-</script>
+
+//进入修改
+const editShow = row => {
+  categoryBrand.value = row
+  dialogVisible.value = true
+}
+
+
+// 修改
+const updateData = async () => {
+  await UpdateCategoryBrandById(categoryBrand.value)
+  dialogVisible.value = false
+  ElMessage.success('操作成功')
+  fetchData() 
+}
 </script>
 
 <style scoped>

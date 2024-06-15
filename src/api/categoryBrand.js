@@ -19,3 +19,12 @@ export const SaveCategoryBrand = categoryBrand => {
       data: categoryBrand,
     })
 }
+
+// 修改信息
+export const UpdateCategoryBrandById = categoryBrand => {
+    return request({
+        url: `${api_name}/updateById`,
+        method: 'put',
+        data: categoryBrand,
+    })
+}
